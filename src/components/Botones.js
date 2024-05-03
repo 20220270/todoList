@@ -9,10 +9,12 @@ export default function Botones({texto_boton, accionboton}) {
         <>
             <View>
                 
-                <TouchableOpacity style={styles.button}
+                <TouchableOpacity 
+                style={styles.button}
                 onPress={accionboton}>
-                    <Text style={styles.buttonText}>{texto_boton}</Text>
-                    
+                    <Text style={styles.buttonText}>
+                        {texto_boton}</Text>
+
                 </TouchableOpacity>
             </View>
         </>

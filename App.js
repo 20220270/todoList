@@ -8,29 +8,21 @@ export default function App() {
 
   /* Codigo javascript */
 
-  const [tarea, setTarea] = useState('')
+  const [tasks, setTasks] = useState([
+    { id: 1, nombreTarea: 'Botar la basura', estado: 'pendiente' },
+    { id: 2, nombreTarea: 'Hacer un cereal', estado: 'pendiente' },
+    { id: 3, nombreTarea: 'Ir a estudiar', estado: 'pendiente' },
+    { id: 4, nombreTarea: 'Trabajar', estado: 'pendiente' },
+    { id: 5, nombreTarea: 'Trabajar hoy', estado: 'pendiente' },
+  ]);
 
-  let tasks = [{ id: 1, nombreTarea: 'Botar la basura' },
-  { id: 2, nombreTarea: 'Hacer un cereal' },
-  { id: 3, nombreTarea: 'Ir a estudiar' },
-  { id: 4, nombreTarea: 'Trabajar' },
-  { id: 5, nombreTarea: 'Trabajar hoy' }]
+  const [inputValue, setInputValue] = useState('');
 
-  const handleEnviar = () => {
-    if (tarea.trim() !== '') {
-      // Agregar una nueva tarea al estado con un ID único
-      setTasks(prevTasks => [
-        ...prevTasks,
-        {
-          id: Math.max(...prevTasks.map(task => task.id), 0) + 1,
-          nombreTarea: tarea
-        }
-      ]);
-      // Limpiar el input después de agregar la tarea
-      setTarea('');
-    }
+  const toggleTaskState = (taskId) => {
+    setTasks(tasks.map(task =>
+      task.id === taskId ? { ...task, estado: task.estado === 'pendiente' ? 'completada' : 'pendiente' } : task
+    ));
   };
-
 
   /* Codigo javascript */
 
@@ -38,22 +30,22 @@ export default function App() {
     <View style={styles.container}>
       <Text style={styles.texto}>TODO LIST</Text>
 
-      <Inputs
+      <Inputs texto_label="Nueva tarea" value={inputValue} onChangeText={setInputValue} />
 
-      />
-
-            <Botones
-                texto_boton='Enviar'
-                onPress={handleEnviar}
-            />
+      <Botones texto_boton="Enviar" />
 
       {/* Mapeamos el arreglo de tareas y renderizar cada una como una card, igual que en el ejemplo 
       de los artistas, a excepcion que ahora los mapeamos desde un view */}
-       {/* Key nos identifica los elementos que se han agregado */}
-       {tasks.map(task => (
-        <View key={task.id} style={styles.card}>
-          <Text>{task.nombreTarea}</Text>
-        </View>
+      {/* Key nos identifica los elementos que se han agregado */}
+      {/* Line through pasara una linea horizontal sobre la task cuando esta ya este terminada */}
+      {tasks.map((task) => (
+        <TouchableOpacity key={task.id} onPress={() => toggleTaskState(task.id)}>
+          <View style={styles.card}>
+            <Text style={{ textDecorationLine: task.estado === 'completada' ? 'line-through' : 'none' }}>
+              {task.nombreTarea}
+            </Text>
+          </View>
+        </TouchableOpacity>
       ))}
 
       <StatusBar style="auto" />
