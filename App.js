@@ -24,23 +24,35 @@ export default function App() {
     ));
   };
 
+  const [highlightedTask, setHighlightedTask] = useState(null);
+
+  const handleLongPress = (taskId) => {
+    setHighlightedTask(taskId);
+    setTimeout(() => {
+      if (highlightedTask === taskId) {
+        setHighlightedTask(null);
+      }
+    }, 20000); // Cambia a null después de 20 segundos
+  };
+
+  
+
   /* Codigo javascript */
 
   return (
     <View style={styles.container}>
       <Text style={styles.texto}>TODO LIST</Text>
-
       <Inputs texto_label="Nueva tarea" value={inputValue} onChangeText={setInputValue} />
-
       <Botones texto_boton="Enviar" />
 
-      {/* Mapeamos el arreglo de tareas y renderizar cada una como una card, igual que en el ejemplo 
-      de los artistas, a excepcion que ahora los mapeamos desde un view */}
-      {/* Key nos identifica los elementos que se han agregado */}
-      {/* Line through pasara una linea horizontal sobre la task cuando esta ya este terminada */}
       {tasks.map((task) => (
-        <TouchableOpacity key={task.id} onPress={() => toggleTaskState(task.id)}>
-          <View style={styles.card}>
+        <TouchableOpacity
+          key={task.id}
+          onPress={() => toggleTaskState(task.id)}
+          onLongPress={() => handleLongPress(task.id)}
+          onPressOut={() => {}}
+        >
+          <View style={[styles.card, highlightedTask === task.id && styles.highlighted]}>
             <Text style={{ textDecorationLine: task.estado === 'completada' ? 'line-through' : 'none' }}>
               {task.nombreTarea}
             </Text>
@@ -49,7 +61,6 @@ export default function App() {
       ))}
 
       <StatusBar style="auto" />
-
     </View>
   );
 
@@ -80,6 +91,10 @@ const styles = StyleSheet.create({
     width: 350,
     borderColor: 'black',
     borderWidth: 1,
+  },
+
+  highlighted: {
+    backgroundColor: 'green',
   },
 
 });

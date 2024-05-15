@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
 import { useState } from 'react'
 
-export default function Botones({texto_boton, accionboton}) {
+export default function Botones({texto_boton, onPress}) {
 
 
     return (
@@ -11,7 +11,7 @@ export default function Botones({texto_boton, accionboton}) {
                 
                 <TouchableOpacity 
                 style={styles.button}
-                onPress={accionboton}>
+                onPress={onPress}>
                     <Text style={styles.buttonText}>
                         {texto_boton}</Text>
 
